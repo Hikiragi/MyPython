@@ -1,0 +1,29 @@
+{% extends 'baseBody.html' %}
+{% block header %}
+<p>
+    <a href="{{ url_for('logout') }}" class="btn btn-primary btn-back-dashboard">Выйти</a>
+</p>
+{% endblock %}
+{% block body %}
+<div class="body-div-admin-db">
+    <h1 style="font-family: system-ui;">Добро пожаловать в панель адмистратора!</h1>
+    <p>Пожалуйста, выберите действие:</p>
+    <div class="container-admin-db">
+        <div class="container-create-edit-btn">
+            <ul class="admin-db-ul">
+                <li class="admin-db-li"><a href="{{ url_for('create_test') }}" class="admin-db-a">Создать тест</a></li>
+                <li class="admin-db-li"><a href="{{ url_for('edit_test') }}" class="admin-db-a">Редактировать тест</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container-res-material-btn">
+            <ul class="admin-db-ul">
+                <li class="admin-db-li"><a href="{{ url_for('view_results') }}" class="admin-db-a">Просмотр тестов</a>
+                </li>
+                <li class="admin-db-li"><a href="{{ url_for('post_material_page') }}" class="admin-db-a">Загрузить
+                    материал</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

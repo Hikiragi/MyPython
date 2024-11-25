@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en-ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
+    <title>{{ the_title }}</title>
+</head>
+<header class="Header">
+    <div class="base-header-content-container">
+        <button id="annotation-button" class="AnnotationButton">Аннотация</button>
+        {% block header %}
+
+        {% endblock %}
+    </div>
+</header>
+<body class="AllBody">
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+
+{% block body %}
+
+{% endblock %}
+<div id="annotation-modal" class="Modal">
+    <div class="ModalContent">
+        <span class="Close">&times;</span>
+        <p class="annotation-text">Приветствуем в системе тестирования по технике безопасности!</p>
+        <p></p>
+        <p class="annotation-text">Чтобы успешно пройти тестирование,требуется ответить верно на 10 вопросов.
+            Если же у вас не вышло,обратитесь к материалу, расположенному в нижнем правом углу сайта.
+            После работы над ошибками,пройдите тестирование заново.
+            Не суйте пальцы в разетку и желаем удачи!)</p>
+    </div>
+</div>
+<script src="/static/script_annotation.js"></script>
+{% block scripts %}
+
+{% endblock %}
+</body>
+</html>

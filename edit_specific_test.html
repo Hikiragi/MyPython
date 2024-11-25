@@ -1,0 +1,107 @@
+{% extends 'baseBody.html' %}
+{% block header %}
+    {% if current_user.role == 'admin' %}
+      <p>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary btn-back-dashboard">Панель администратора</a>
+      </p>
+    {% endif %}
+{% endblock %}
+{% block body %}
+<div class="edit-test-container">
+    <div class="edit-test-specific-content-container">
+        <h1 class="edit-specifit-test-label">Название теста: {{ test_name }}</h1>
+        <p class="edit-specifit-test-label">Описание: {{ test_data['description'] }}</p>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            {{ form.name.label }} {{ form.name(class="eidt-specific-test-input") }} <br>
+            {{ form.description.label }} {{ form.description(class="eidt-specific-test-input") }}
+            <div id="questions_container" class="edit-specific-test-container">
+                <h2>Вопросы:</h2>
+                {% for question in test_data['questions'] %}
+                <div>
+                    <p>Вопрос: <input type="text" class="eidt-specific-test-input" value="{{ question['text'] }}"></p>
+                    {% if question['type'] == 'multiple-choice' %}
+                    <ul>
+                        {% for option in question['options'] %}
+                        <li>
+                            <input type="radio" name="question_{{ question.id }}_answer" value="{{ option['text'] }}" {%
+                                   if
+                                   option['correct']
+                            %}checked{% endif %}>
+                            <input type="text" class="edit-test-specific-option-text" value="{{ option['text'] }}">
+                            <input type="hidden" class="option_correct" value="{{ option['correct'] | string }}">
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <p>Пояснение: <input type="text" class="eidt-specific-test-input"
+                                           value="{{ question['explanation'] }}">
+                    </p>
+                    {% elif question['type'] == 'short-answer' %}
+                    <p>Правильный ответ: <input type="text" class="eidt-specific-test-input"
+                                              value="{{ question['correct_answer'] }}"></p>
+                    <p>Пояснение: <input type="text" class="eidt-specific-test-input"
+                                           value="{{ question['explanation'] }}">
+                    </p>
+                    {% endif %}
+                </div>
+                {% if not loop.last %}
+                {% endif %}
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+    <div id="new_question_container" class="new-edit-specific-test-container">
+        <h2 class="edit-specifit-test-label">Добавить вопрос:</h2>
+        <div>
+            <label for="question_text">Текст вопроса:</label>
+            <input type="text" id="question_text" name="question_text" class="eidt-specific-test-input">
+        </div>
+        <div>
+            <label for="question_type">Тип вопроса:</label>
+            <select id="question_type" name="question_type" class="eidt-specific-test-input">
+                <option value="multiple-choice">Множественный выбор</option>
+                <option value="short-answer">Вопрос-ответ</option>
+            </select>
+        </div>
+
+        <div id="options_container">
+            <label>Опции:</label>
+            <div>
+                <input type="radio" name="question_1_answer" value="correct">
+                <input type="text" name="option_text_0" class="edit-test-specific-option-text">
+            </div>
+            <div>
+                <input type="radio" name="question_1_answer" value="correct">
+                <input type="text" name="option_text_1" class="edit-test-specific-option-text">
+            </div>
+            <div>
+                <label for="explanation">Пояснение:</label>
+                <input type="text" id="explanation" name="explanation" class="eidt-specific-test-input">
+            </div>
+            <button type="button" id="add_option_btn" class="edit-specific-test-btn">Добавить вариант ответа</button>
+        </div>
+        <div id="short_answer_container" style="display: none;">
+            <label for="correct_answer">Правильный ответ:</label>
+            <input type="text" id="correct_answer" name="correct_answer" class="eidt-specific-test-input">
+            <br>
+            <label for="explanation">Пояснение:</label>
+            <input type="text" id="explanation" name="explanation" class="eidt-specific-test-input">
+        </div>
+
+        <input type="hidden" id="num_options" name="num_options" value="2">
+
+        <button type="button" id="add_question_btn" class="edit-specific-test-btn">Добавить вопрос</button>
+        <input type="submit" name="save_changes" value="Сохранить изменения" class="edit-specific-test-btn">
+    </div>
+
+</div>
+<script>
+    var test_name = "{{ test_name }}"
+    var test_description = document.getElementById('test_description');
+    test_description.addEventListener('input', function() {
+
+    });
+</script>
+<script src="/static/editSpecificTest.js"></script>
+{% endblock %}

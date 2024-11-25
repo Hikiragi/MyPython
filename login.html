@@ -1,0 +1,23 @@
+{% extends 'baseBody.html' %}
+
+{% block body %}
+<div class="content-section-login">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group-login">
+            <legend class="border-bottom mb-4 form-control-label">Авторизайция</legend>
+            {{ form.username.label(class="form-control-label") }}
+            {{ form.username(class="form-control form-control-lg") }}
+        </fieldset>
+        <fieldset class="form-group-login-pass">
+            {{ form.password.label(class="form-control-label") }}
+            {{ form.password(class="form-control form-control-lg") }}
+        </fieldset>
+        {{ form.submit(class="btn btn-outline-info") }}
+        <p class="text-reg">
+            У вас нет аккаунта?  <a href="{{ url_for('register') }}" class="link-reg">Регистрация</a>
+        </p>
+    </form>
+
+</div>
+{% endblock %}

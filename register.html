@@ -1,0 +1,28 @@
+{% extends 'baseBody.html' %}
+
+{% block body %}
+<div class="content-section-login">
+    <form method="POST" action="{{ url_for('register') }}">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <fieldset class="form-group-reg">
+            <legend class="border-bottom mb-4 form-control-label"> Registration</legend>
+            {{ form.username.label(class="form-control-label") }}
+            {{ form.username(class="form-control form-control-reg") }}
+        </fieldset>
+        <fieldset class="form-group-reg">
+            {{ form.email.label(class="form-control-label") }}
+            {{ form.email(class="form-control form-control-reg") }}
+        </fieldset>
+        <fieldset class="form-group-reg">
+            {{ form.password.label(class="form-control-label") }}
+            {{ form.password(class="form-control form-control-reg") }}
+        </fieldset>
+        <fieldset class="form-group-reg">
+            {{ form.confirm_password.label(class="form-control-label") }}
+            {{ form.confirm_password(class="form-control form-control-reg") }}
+        </fieldset>
+        {{ form.submit(class="btn btn-outline-info") }}
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'baseBody.html' %}
+{% block header %}
+{% if current_user.role == 'admin' %}
+<p>
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary btn-back-dashboard">Назад</a>
+</p>
+{% endif %}
+
+{% endblock %}
+{% block body %}
+<h1 style="font-family: system-ui;">Просмотр тестов</h1>
+<div class="view-result-content-container">
+    {% for test in tests %}
+    <div class="view-test-column">
+        <h3 style="font-family: system-ui;">{{ test.name }}</h3>
+        <p style="font-family: system-ui;">{{ test.description }}</p>
+        <form method="POST">
+            <input type="hidden" name="test_name" value="{{ test.name }}">
+            <fieldset class="view-test-fieldset" style="font-family: system-ui;">
+                {% for question in test.questions %}
+                <p>{{ question.text }}</p>
+                {% if question.type == 'short-answer' %}
+                <input type="text" name="answer{{ question['index'] }}" required class="eidt-specific-test-input">
+                {% elif question.type == 'multiple-choice' %}
+                <div class="options">
+                    {% for option in question.options %}
+                    <input type="radio" name="answer{{ question['index'] }}" value="{{ option.text }}"
+                           id="{{ option.text }}">
+                    <label for="{{ option.text }}">{{ option.text }}</label><br>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </fieldset>
+            <br>
+            <button type="submit" class="btn btn-primary view-tests-submit-btn">Ответить</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% if current_user.role == 'admin' %}
+<button id="history-button" class="HistoryButton view-tests-submit-btn position-show-history">Показать историю</button>
+{% else %}
+<button id="download-button" class="DownloadMaterial view-tests-submit-btn position-show-history">Скачать материалы
+</button>
+{% endif %}
+<div id="historyResults" class="Modal">
+    <div class="ModalContent">
+        <span class="Close">&times;</span>
+        <h2>История прохождений</h2>
+        <p>Тест</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Имя пользователя</th>
+                <th>Название теста</th>
+                <th>Дата</th>
+                <th>Время</th>
+                <th>Кол-во правильных ответов</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for result in all_results %}
+            <tr>
+                <td>{{ result.user }}</td>
+                <td style="padding-left: 10px;">{{ result.test_name }}</td>
+                <td style="padding-left: 10px;">{{ result.date }}</td>
+                <td style="padding-left: 10px;">{{ result.time }}</td>
+                <td style="padding-left: 10px;">{{ result.correct_answers }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="/static/scriptShowHistory.js"></script>
+<div id="downloadModal" class="Modal">
+    <div class="ModalContent">
+        <h2>Скачать материалы</h2>
+        <div id="download-links"></div>
+    </div>
+</div>
+<script src="/static/scriptDownloadMaterials.js"></script>
+{% if results_with_explanations %}
+<div id="resultsModal" class="Modal">
+    <div class="ModalContent">
+        {% for result in results_with_explanations %}
+        <p>{{ result.question }}</p>
+        <p>Твой ответ: {{ result.answer }}</p>
+        {% if result.correct %}
+        <p>Верно!</p>
+        {% else %}
+        <p>Неправильно. Пояснение: {{ result.explanation }}</p>
+        {% endif %}
+        {% endfor %}
+        <p>Кол-во правильных ответов: {{ correct_answers }}</p>
+    </div>
+</div>
+{% endif %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var options = document.querySelectorAll('.options');
+      options.forEach(function(option) {
+        option.style.display = 'block';
+      });
+      var modal = document.getElementById("resultsModal");
+      if (modal) {
+        var span = document.getElementsByClassName("Close")[0];
+        modal.style.display = "block";
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+      }
+    });
+</script>
+{% endblock %}

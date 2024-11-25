@@ -1,0 +1,31 @@
+{% extends 'baseBody.html' %}
+{% block header %}
+    {% if current_user.role == 'admin' %}
+      <p>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary btn-back-dashboard">Назад</a>
+      </p>
+    {% endif %}
+{% endblock %}
+{% block body %}
+
+<div class="create-test-content-container">
+    <h1>Создание теста</h1>
+
+    <form id="test-form" class="create-test-form">
+        <div class="test-info-block-create-test">
+            <label for="test-name">Название теста:</label>
+            <input type="text" id="test-name" name="test-name" class="create-test-input">
+            <br>
+            <label for="test-description">Описание теста:</label>
+            <textarea id="test-description" name="test-description" class="create-test-textarea"></textarea>
+            <br>
+            <button type="button" id="add-question-btn" class="add-question-btn-create-test">Добавить вопрос</button>
+        </div>
+        <div class="question-container">
+        </div>
+
+    </form>
+    <button type="submit" id="create-test-btn" class="create-test-btn">Создать тест</button>
+    <script src="/static/btnsCreateTest.js"></script>
+</div>
+{% endblock %}

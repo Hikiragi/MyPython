@@ -1,0 +1,13 @@
+{% extends 'baseBody.html' %}
+{% block header %}
+{% if current_user.role == 'admin' %}
+<p>
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-primary btn-back-dashboard">Назад</a>
+</p>
+{% endif %}
+{% endblock %}
+{% block body %}
+<div class="post-material-dropzone">
+    <form action="{{ url_for('upload_material') }}" class="dropzone" id="material-dropzone"></form>
+</div>
+{% endblock %}
